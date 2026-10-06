@@ -1,0 +1,1243 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NumPy Visual Guide</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #202124;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            margin-top: 10px;
+            color: #cbd5e1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .categories button {
+            border: none;
+            background: white;
+            padding: 11px 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            border: 1px solid #ddd;
+        }
+
+        .categories button:hover,
+        .categories button.active {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .count {
+            margin: 15px 0;
+            color: #64748b;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .function {
+            color: #4f46e5;
+            font-size: 19px;
+            font-weight: bold;
+            font-family: Consolas, monospace;
+        }
+
+        .title {
+            margin-top: 8px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .description {
+            margin-top: 8px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 14px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        .tip {
+            background: #eef2ff;
+            border-left: 5px solid #4f46e5;
+            padding: 18px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 28px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>NumPy Visual Guide</h1>
+    <p>Properties, Functions, Examples & Quick Reference</p>
+</header>
+
+<div class="container">
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="search"
+            placeholder="Search NumPy function... e.g. mean, reshape, zeros"
+        >
+    </div>
+
+    <div class="categories">
+        <button class="active" data-category="all">All</button>
+        <button data-category="basics">Basics</button>
+        <button data-category="properties">Properties</button>
+        <button data-category="create">Create Arrays</button>
+        <button data-category="reshape">Shape & Reshape</button>
+        <button data-category="math">Math</button>
+        <button data-category="statistics">Statistics</button>
+        <button data-category="indexing">Indexing</button>
+        <button data-category="combine">Combine</button>
+        <button data-category="random">Random</button>
+        <button data-category="linear">Linear Algebra</button>
+    </div>
+
+    <div class="count" id="count"></div>
+
+    <div class="grid" id="cards"></div>
+
+    <div class="tip">
+        <strong>🧠 NumPy Learning Flow</strong>
+        <p>
+            Create Array → Inspect → Index → Reshape →
+            Calculate → Analyze
+        </p>
+
+        <pre><code>import numpy as np
+
+arr = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+
+print(arr)</code></pre>
+    </div>
+
+</div>
+
+<footer>
+    NumPy Visual Learning Guide
+</footer>
+
+
+<script>
+
+const numpyData = [
+
+    // =========================
+    // BASICS
+    // =========================
+
+    {
+        category: "basics",
+        name: "np",
+        title: "Import NumPy",
+        description: "The standard alias used when importing NumPy.",
+        example: `import numpy as np`
+    },
+
+    {
+        category: "basics",
+        name: "np.array()",
+        title: "Create an Array",
+        description: "Converts a Python list or tuple into a NumPy array.",
+        example: `arr = np.array([10, 20, 30])
+
+print(arr)`
+    },
+
+    {
+        category: "basics",
+        name: "ndarray",
+        title: "NumPy Array Object",
+        description: "The main multidimensional array object in NumPy.",
+        example: `arr = np.array([1, 2, 3])
+
+print(type(arr))`
+    },
+
+    {
+        category: "basics",
+        name: "axis",
+        title: "Array Axis",
+        description: "axis=0 usually works down rows and axis=1 works across columns.",
+        example: `arr = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print(arr.mean(axis=0))
+print(arr.mean(axis=1))`
+    },
+
+
+    // =========================
+    // PROPERTIES
+    // =========================
+
+    {
+        category: "properties",
+        name: "ndim",
+        title: "Number of Dimensions",
+        description: "Returns the number of dimensions of an array.",
+        example: `arr = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print(arr.ndim)
+
+# 2`
+    },
+
+    {
+        category: "properties",
+        name: "shape",
+        title: "Array Shape",
+        description: "Returns the size of each dimension.",
+        example: `arr = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print(arr.shape)
+
+# (2, 3)`
+    },
+
+    {
+        category: "properties",
+        name: "size",
+        title: "Total Elements",
+        description: "Returns the total number of elements.",
+        example: `arr = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+print(arr.size)
+
+# 6`
+    },
+
+    {
+        category: "properties",
+        name: "dtype",
+        title: "Data Type",
+        description: "Returns the data type of elements inside the array.",
+        example: `arr = np.array([1, 2, 3])
+
+print(arr.dtype)
+
+# int64 / int32`
+    },
+
+    {
+        category: "properties",
+        name: "itemsize",
+        title: "Bytes Per Element",
+        description: "Returns the number of bytes used by each element.",
+        example: `arr = np.array([1, 2, 3])
+
+print(arr.itemsize)`
+    },
+
+    {
+        category: "properties",
+        name: "nbytes",
+        title: "Total Memory",
+        description: "Returns the total number of bytes occupied by the array.",
+        example: `arr = np.array([1, 2, 3])
+
+print(arr.nbytes)`
+    },
+
+    {
+        category: "properties",
+        name: "T",
+        title: "Transpose",
+        description: "Swaps rows and columns.",
+        example: `arr = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+print(arr.T)`
+    },
+
+
+    // =========================
+    // CREATE ARRAYS
+    // =========================
+
+    {
+        category: "create",
+        name: "np.zeros()",
+        title: "Array of Zeros",
+        description: "Creates an array filled with zeros.",
+        example: `arr = np.zeros((2, 3))
+
+print(arr)`
+    },
+
+    {
+        category: "create",
+        name: "np.ones()",
+        title: "Array of Ones",
+        description: "Creates an array filled with ones.",
+        example: `arr = np.ones((2, 3))
+
+print(arr)`
+    },
+
+    {
+        category: "create",
+        name: "np.full()",
+        title: "Array With Same Value",
+        description: "Creates an array where every element has the specified value.",
+        example: `arr = np.full((2, 3), 7)
+
+print(arr)`
+    },
+
+    {
+        category: "create",
+        name: "np.empty()",
+        title: "Empty Array",
+        description: "Creates an uninitialized array. Values should not be assumed.",
+        example: `arr = np.empty((2, 3))
+
+print(arr)`
+    },
+
+    {
+        category: "create",
+        name: "np.arange()",
+        title: "Number Sequence",
+        description: "Creates evenly spaced values using start, stop and step.",
+        example: `arr = np.arange(0, 10, 2)
+
+print(arr)
+
+# [0 2 4 6 8]`
+    },
+
+    {
+        category: "create",
+        name: "np.linspace()",
+        title: "Evenly Spaced Values",
+        description: "Creates a specified number of evenly spaced values.",
+        example: `arr = np.linspace(0, 10, 5)
+
+print(arr)
+
+# [0.  2.5 5.  7.5 10.]`
+    },
+
+    {
+        category: "create",
+        name: "np.eye()",
+        title: "Identity Matrix",
+        description: "Creates a square identity matrix.",
+        example: `arr = np.eye(3)
+
+print(arr)`
+    },
+
+    {
+        category: "create",
+        name: "np.diag()",
+        title: "Diagonal",
+        description: "Creates a diagonal matrix or extracts a diagonal.",
+        example: `arr = np.diag([1, 2, 3])
+
+print(arr)`
+    },
+
+
+    // =========================
+    // SHAPE
+    // =========================
+
+    {
+        category: "reshape",
+        name: "reshape()",
+        title: "Change Shape",
+        description: "Changes the shape without changing the data.",
+        example: `arr = np.arange(6)
+
+new_arr = arr.reshape(2, 3)
+
+print(new_arr)`
+    },
+
+    {
+        category: "reshape",
+        name: "ravel()",
+        title: "Flatten Array",
+        description: "Converts an array into one dimension.",
+        example: `arr = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+print(arr.ravel())
+
+# [1 2 3 4]`
+    },
+
+    {
+        category: "reshape",
+        name: "flatten()",
+        title: "Flatten Copy",
+        description: "Returns a flattened copy of the array.",
+        example: `arr = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+print(arr.flatten())`
+    },
+
+    {
+        category: "reshape",
+        name: "np.expand_dims()",
+        title: "Add Dimension",
+        description: "Adds a new dimension to an array.",
+        example: `arr = np.array([1, 2, 3])
+
+print(np.expand_dims(arr, axis=0))
+
+# shape: (1, 3)`
+    },
+
+    {
+        category: "reshape",
+        name: "np.squeeze()",
+        title: "Remove Dimension",
+        description: "Removes dimensions whose size is 1.",
+        example: `arr = np.array([[1, 2, 3]])
+
+print(arr.shape)
+
+arr = np.squeeze(arr)
+
+print(arr.shape)
+
+# (3,)`
+    },
+
+
+    // =========================
+    // MATH
+    // =========================
+
+    {
+        category: "math",
+        name: "np.add()",
+        title: "Addition",
+        description: "Adds corresponding elements.",
+        example: `a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+print(np.add(a, b))
+
+# [5 7 9]`
+    },
+
+    {
+        category: "math",
+        name: "np.subtract()",
+        title: "Subtraction",
+        description: "Subtracts corresponding elements.",
+        example: `a = np.array([5, 6, 7])
+b = np.array([1, 2, 3])
+
+print(np.subtract(a, b))
+
+# [4 4 4]`
+    },
+
+    {
+        category: "math",
+        name: "np.multiply()",
+        title: "Multiplication",
+        description: "Performs element-by-element multiplication.",
+        example: `a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+print(np.multiply(a, b))
+
+# [4 10 18]`
+    },
+
+    {
+        category: "math",
+        name: "np.divide()",
+        title: "Division",
+        description: "Divides corresponding elements.",
+        example: `a = np.array([10, 20, 30])
+b = np.array([2, 4, 5])
+
+print(np.divide(a, b))
+
+# [5. 5. 6.]`
+    },
+
+    {
+        category: "math",
+        name: "np.power()",
+        title: "Power",
+        description: "Raises each element to a power.",
+        example: `arr = np.array([2, 3, 4])
+
+print(np.power(arr, 2))
+
+# [4 9 16]`
+    },
+
+    {
+        category: "math",
+        name: "np.sqrt()",
+        title: "Square Root",
+        description: "Calculates square root element by element.",
+        example: `arr = np.array([4, 9, 16])
+
+print(np.sqrt(arr))
+
+# [2. 3. 4.]`
+    },
+
+    {
+        category: "math",
+        name: "np.abs()",
+        title: "Absolute Value",
+        description: "Converts negative values to positive magnitude.",
+        example: `arr = np.array([-10, 5, -3])
+
+print(np.abs(arr))
+
+# [10 5 3]`
+    },
+
+    {
+        category: "math",
+        name: "np.round()",
+        title: "Round Numbers",
+        description: "Rounds floating point values.",
+        example: `arr = np.array([1.234, 2.678])
+
+print(np.round(arr, 2))
+
+# [1.23 2.68]`
+    },
+
+    {
+        category: "math",
+        name: "np.floor()",
+        title: "Round Down",
+        description: "Rounds values down to the nearest integer.",
+        example: `arr = np.array([1.8, 2.3, 5.9])
+
+print(np.floor(arr))
+
+# [1. 2. 5.]`
+    },
+
+    {
+        category: "math",
+        name: "np.ceil()",
+        title: "Round Up",
+        description: "Rounds values up to the nearest integer.",
+        example: `arr = np.array([1.2, 2.3, 5.1])
+
+print(np.ceil(arr))
+
+# [2. 3. 6.]`
+    },
+
+
+    // =========================
+    // STATISTICS
+    // =========================
+
+    {
+        category: "statistics",
+        name: "np.sum()",
+        title: "Sum",
+        description: "Adds all elements or calculates sums along an axis.",
+        example: `arr = np.array([10, 20, 30])
+
+print(np.sum(arr))
+
+# 60`
+    },
+
+    {
+        category: "statistics",
+        name: "np.mean()",
+        title: "Mean / Average",
+        description: "Calculates the arithmetic average.",
+        example: `marks = np.array([70, 80, 90])
+
+print(np.mean(marks))
+
+# 80.0`
+    },
+
+    {
+        category: "statistics",
+        name: "np.median()",
+        title: "Median",
+        description: "Returns the middle value after sorting.",
+        example: `arr = np.array([10, 50, 20])
+
+print(np.median(arr))
+
+# 20.0`
+    },
+
+    {
+        category: "statistics",
+        name: "np.std()",
+        title: "Standard Deviation",
+        description: "Measures how spread out values are.",
+        example: `marks = np.array([60, 70, 80, 90])
+
+print(np.std(marks))`
+    },
+
+    {
+        category: "statistics",
+        name: "np.var()",
+        title: "Variance",
+        description: "Measures squared spread from the mean.",
+        example: `arr = np.array([1, 2, 3, 4, 5])
+
+print(np.var(arr))`
+    },
+
+    {
+        category: "statistics",
+        name: "np.min()",
+        title: "Minimum",
+        description: "Returns the smallest value.",
+        example: `arr = np.array([50, 20, 80, 10])
+
+print(np.min(arr))
+
+# 10`
+    },
+
+    {
+        category: "statistics",
+        name: "np.max()",
+        title: "Maximum",
+        description: "Returns the largest value.",
+        example: `arr = np.array([50, 20, 80, 10])
+
+print(np.max(arr))
+
+# 80`
+    },
+
+    {
+        category: "statistics",
+        name: "np.argmin()",
+        title: "Index of Minimum",
+        description: "Returns the index where the minimum value occurs.",
+        example: `arr = np.array([50, 20, 80, 10])
+
+print(np.argmin(arr))
+
+# 3`
+    },
+
+    {
+        category: "statistics",
+        name: "np.argmax()",
+        title: "Index of Maximum",
+        description: "Returns the index where the maximum value occurs.",
+        example: `arr = np.array([50, 20, 80, 10])
+
+print(np.argmax(arr))
+
+# 2`
+    },
+
+    {
+        category: "statistics",
+        name: "np.percentile()",
+        title: "Percentile",
+        description: "Returns a value below which a given percentage of observations fall.",
+        example: `ages = np.array([10, 20, 30, 40, 50])
+
+print(np.percentile(ages, 75))`
+    },
+
+    {
+        category: "statistics",
+        name: "np.unique()",
+        title: "Unique Values",
+        description: "Returns distinct values from an array.",
+        example: `arr = np.array([1, 2, 2, 3, 3, 3])
+
+print(np.unique(arr))
+
+# [1 2 3]`
+    },
+
+    {
+        category: "statistics",
+        name: "np.cumsum()",
+        title: "Cumulative Sum",
+        description: "Calculates a running total.",
+        example: `arr = np.array([10, 20, 30])
+
+print(np.cumsum(arr))
+
+# [10 30 60]`
+    },
+
+
+    // =========================
+    // INDEXING
+    // =========================
+
+    {
+        category: "indexing",
+        name: "arr[index]",
+        title: "Access Element",
+        description: "Accesses an element using its index.",
+        example: `arr = np.array([10, 20, 30])
+
+print(arr[1])
+
+# 20`
+    },
+
+    {
+        category: "indexing",
+        name: "arr[start:stop]",
+        title: "Slicing",
+        description: "Extracts a range of elements.",
+        example: `arr = np.array([10, 20, 30, 40, 50])
+
+print(arr[1:4])
+
+# [20 30 40]`
+    },
+
+    {
+        category: "indexing",
+        name: "arr[row, col]",
+        title: "2D Indexing",
+        description: "Accesses an element from a two-dimensional array.",
+        example: `arr = np.array([
+    [10, 20],
+    [30, 40]
+])
+
+print(arr[1, 0])
+
+# 30`
+    },
+
+    {
+        category: "indexing",
+        name: "arr[:, col]",
+        title: "Select Column",
+        description: "Selects an entire column.",
+        example: `arr = np.array([
+    [10, 20],
+    [30, 40],
+    [50, 60]
+])
+
+print(arr[:, 1])
+
+# [20 40 60]`
+    },
+
+    {
+        category: "indexing",
+        name: "arr[row, :]",
+        title: "Select Row",
+        description: "Selects an entire row.",
+        example: `print(arr[1, :])
+
+# [30 40]`
+    },
+
+    {
+        category: "indexing",
+        name: "Boolean Mask",
+        title: "Filter Values",
+        description: "Selects values that satisfy a condition.",
+        example: `arr = np.array([10, 20, 30, 40])
+
+print(arr[arr > 20])
+
+# [30 40]`
+    },
+
+    {
+        category: "indexing",
+        name: "np.where()",
+        title: "Conditional Selection",
+        description: "Returns values or positions based on a condition.",
+        example: `arr = np.array([10, 20, 30])
+
+result = np.where(arr > 15, 1, 0)
+
+print(result)
+
+# [0 1 1]`
+    },
+
+
+    // =========================
+    // COMBINE
+    // =========================
+
+    {
+        category: "combine",
+        name: "np.concatenate()",
+        title: "Join Arrays",
+        description: "Joins arrays along an existing axis.",
+        example: `a = np.array([1, 2])
+b = np.array([3, 4])
+
+print(np.concatenate([a, b]))
+
+# [1 2 3 4]`
+    },
+
+    {
+        category: "combine",
+        name: "np.stack()",
+        title: "Stack Arrays",
+        description: "Joins arrays along a new axis.",
+        example: `a = np.array([1, 2])
+b = np.array([3, 4])
+
+print(np.stack([a, b]))`
+    },
+
+    {
+        category: "combine",
+        name: "np.vstack()",
+        title: "Vertical Stack",
+        description: "Stacks arrays row-wise.",
+        example: `a = np.array([1, 2])
+b = np.array([3, 4])
+
+print(np.vstack([a, b]))`
+    },
+
+    {
+        category: "combine",
+        name: "np.hstack()",
+        title: "Horizontal Stack",
+        description: "Stacks arrays column-wise.",
+        example: `a = np.array([1, 2])
+b = np.array([3, 4])
+
+print(np.hstack([a, b]))`
+    },
+
+    {
+        category: "combine",
+        name: "np.split()",
+        title: "Split Array",
+        description: "Splits an array into multiple equal sections.",
+        example: `arr = np.array([1, 2, 3, 4, 5, 6])
+
+print(np.split(arr, 3))`
+    },
+
+
+    // =========================
+    // RANDOM
+    // =========================
+
+    {
+        category: "random",
+        name: "np.random.rand()",
+        title: "Random Floats",
+        description: "Generates random values between 0 and 1.",
+        example: `print(np.random.rand(3))
+
+# Example:
+# [0.42 0.71 0.13]`
+    },
+
+    {
+        category: "random",
+        name: "np.random.randn()",
+        title: "Normal Distribution",
+        description: "Generates random numbers from a standard normal distribution.",
+        example: `print(np.random.randn(3))`
+    },
+
+    {
+        category: "random",
+        name: "np.random.randint()",
+        title: "Random Integers",
+        description: "Generates random integers in a specified range.",
+        example: `print(np.random.randint(1, 10, 5))
+
+# Example:
+# [3 7 1 9 4]`
+    },
+
+    {
+        category: "random",
+        name: "np.random.choice()",
+        title: "Random Choice",
+        description: "Randomly selects values from an array.",
+        example: `arr = [10, 20, 30]
+
+print(np.random.choice(arr))`
+    },
+
+    {
+        category: "random",
+        name: "np.random.seed()",
+        title: "Random Seed",
+        description: "Makes random results reproducible.",
+        example: `np.random.seed(42)
+
+print(np.random.randint(1, 10, 5))`
+    },
+
+
+    // =========================
+    // LINEAR ALGEBRA
+    // =========================
+
+    {
+        category: "linear",
+        name: "np.dot()",
+        title: "Dot Product",
+        description: "Calculates the dot product of arrays.",
+        example: `a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+print(np.dot(a, b))
+
+# 32`
+    },
+
+    {
+        category: "linear",
+        name: "A @ B",
+        title: "Matrix Multiplication",
+        description: "The @ operator performs matrix multiplication.",
+        example: `A = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+B = np.array([
+    [5, 6],
+    [7, 8]
+])
+
+print(A @ B)`
+    },
+
+    {
+        category: "linear",
+        name: "np.matmul()",
+        title: "Matrix Multiplication",
+        description: "Explicit NumPy function for matrix multiplication.",
+        example: `result = np.matmul(A, B)
+
+print(result)`
+    },
+
+    {
+        category: "linear",
+        name: "np.linalg.inv()",
+        title: "Matrix Inverse",
+        description: "Calculates the inverse of a square matrix.",
+        example: `A = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+print(np.linalg.inv(A))`
+    },
+
+    {
+        category: "linear",
+        name: "np.linalg.det()",
+        title: "Determinant",
+        description: "Calculates the determinant of a matrix.",
+        example: `A = np.array([
+    [1, 2],
+    [3, 4]
+])
+
+print(np.linalg.det(A))`
+    },
+
+    {
+        category: "linear",
+        name: "np.linalg.solve()",
+        title: "Solve Equations",
+        description: "Solves a system of linear equations Ax = b.",
+        example: `A = np.array([
+    [2, 1],
+    [1, 3]
+])
+
+b = np.array([5, 6])
+
+x = np.linalg.solve(A, b)
+
+print(x)`
+    },
+
+    {
+        category: "linear",
+        name: "np.linalg.norm()",
+        title: "Vector Norm",
+        description: "Calculates the magnitude or norm of an array.",
+        example: `arr = np.array([3, 4])
+
+print(np.linalg.norm(arr))
+
+# 5.0`
+    }
+
+];
+
+
+// ====================================
+// DISPLAY CARDS
+// ====================================
+
+const cardsContainer = document.getElementById("cards");
+const countElement = document.getElementById("count");
+const searchInput = document.getElementById("search");
+
+let currentCategory = "all";
+
+
+function displayCards() {
+
+    const searchText = searchInput.value.toLowerCase();
+
+    const filtered = numpyData.filter(item => {
+
+        const categoryMatch =
+            currentCategory === "all" ||
+            item.category === currentCategory;
+
+        const searchMatch =
+            item.name.toLowerCase().includes(searchText) ||
+            item.title.toLowerCase().includes(searchText) ||
+            item.description.toLowerCase().includes(searchText);
+
+        return categoryMatch && searchMatch;
+
+    });
+
+
+    cardsContainer.innerHTML = "";
+
+
+    filtered.forEach(item => {
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+            <div class="function">
+                ${item.name}
+            </div>
+
+            <div class="title">
+                ${item.title}
+            </div>
+
+            <div class="description">
+                ${item.description}
+            </div>
+
+            <pre><code>${escapeHTML(item.example)}</code></pre>
+
+        `;
+
+        cardsContainer.appendChild(card);
+
+    });
+
+
+    countElement.innerText =
+        `Showing ${filtered.length} NumPy topics`;
+
+}
+
+
+// ====================================
+// HTML ESCAPE
+// ====================================
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+}
+
+
+// ====================================
+// CATEGORY BUTTONS
+// ====================================
+
+document
+    .querySelectorAll(".categories button")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            document
+                .querySelectorAll(".categories button")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            currentCategory =
+                button.dataset.category;
+
+            displayCards();
+
+        });
+
+    });
+
+
+// ====================================
+// SEARCH
+// ====================================
+
+searchInput.addEventListener("input", displayCards);
+
+
+// ====================================
+// INITIAL LOAD
+// ====================================
+
+displayCards();
+
+</script>
+
+</body>
+</html>
+```
