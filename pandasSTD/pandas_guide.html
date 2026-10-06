@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pandas Visual Guide</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f7fb;
+        color: #222;
+    }
+
+    header {
+        background: #111827;
+        color: white;
+        padding: 35px 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 38px;
+    }
+
+    header p {
+        color: #cbd5e1;
+        margin-top: 10px;
+        font-size: 17px;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: auto;
+        padding: 25px;
+    }
+
+    /* Search */
+
+    .search-box {
+        width: 100%;
+        padding: 16px 20px;
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        font-size: 16px;
+        outline: none;
+        margin-bottom: 20px;
+    }
+
+    .search-box:focus {
+        border-color: #7c3aed;
+    }
+
+    /* Categories */
+
+    .categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .category-btn {
+        border: none;
+        background: white;
+        padding: 10px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: 0.2s;
+    }
+
+    .category-btn:hover {
+        background: #ede9fe;
+    }
+
+    .category-btn.active {
+        background: #7c3aed;
+        color: white;
+    }
+
+    /* Cards */
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+    }
+
+    .function {
+        color: #7c3aed;
+        font-size: 19px;
+        font-weight: bold;
+        margin-bottom: 6px;
+        font-family: Consolas, monospace;
+    }
+
+    .title {
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .description {
+        color: #555;
+        line-height: 1.5;
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    pre {
+        background: #111827;
+        color: #e5e7eb;
+        padding: 14px;
+        border-radius: 10px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    code {
+        font-family: Consolas, monospace;
+    }
+
+    .category-label {
+        display: inline-block;
+        background: #ede9fe;
+        color: #6d28d9;
+        padding: 4px 9px;
+        border-radius: 8px;
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    /* Tip */
+
+    .tip {
+        background: #fff;
+        border-left: 5px solid #7c3aed;
+        padding: 20px;
+        margin: 30px 0;
+        border-radius: 10px;
+        line-height: 1.6;
+    }
+
+    .tip h2 {
+        margin-top: 0;
+    }
+
+    /* No results */
+
+    .no-results {
+        display: none;
+        text-align: center;
+        padding: 50px;
+        color: #777;
+    }
+
+    footer {
+        text-align: center;
+        padding: 35px;
+        color: #777;
+        margin-top: 30px;
+    }
+
+    @media(max-width:600px) {
+        header h1 {
+            font-size: 28px;
+        }
+
+        .container {
+            padding: 15px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🐼 Pandas Visual Guide</h1>
+    <p>Series, DataFrame, Cleaning, GroupBy, Statistics, Merge & More</p>
+</header>
+
+<div class="container">
+
+    <input
+        type="text"
+        id="search"
+        class="search-box"
+        placeholder="🔍 Search pandas functions... example: groupby, fillna, merge"
+    >
+
+    <div class="categories" id="categories"></div>
+
+    <div class="tip">
+        <h2>🚀 Pandas Learning Flow</h2>
+
+        <p>
+            A common Data Analysis workflow:
+        </p>
+
+        <strong>
+            Read → Inspect → Select → Filter → Clean → Transform →
+            Group → Analyze → Reshape → Export
+        </strong>
+
+        <pre><code>import pandas as pd
+
+df = pd.read_csv("students.csv")
+
+print(df.head())
+
+df["age"] = df["age"].fillna(df["age"].median())
+
+result = df.groupby("department")["score"].mean()
+
+print(result)</code></pre>
+    </div>
+
+    <div class="grid" id="cards"></div>
+
+    <div class="no-results" id="noResults">
+        <h2>😕 No results found</h2>
+        <p>Try another function or category.</p>
+    </div>
+
+</div>
+
+<footer>
+    Pandas Visual Guide • Python Data Analysis
+</footer>
+
+
+<script>
+
+const data = [
+
+/* =====================================================
+   BASICS
+===================================================== */
+
+{
+    category: "Basics",
+    function: "import pandas as pd",
+    title: "Import Pandas",
+    description: "Imports the pandas library and gives it the short name pd.",
+    example: `import pandas as pd`
+},
+
+{
+    category: "Basics",
+    function: "pd.Series()",
+    title: "Create a Series",
+    description: "A Series is a one-dimensional labeled data structure.",
+    example: `import pandas as pd
+
+marks = pd.Series([80, 90, 75, 88])
+
+print(marks)`
+},
+
+{
+    category: "Basics",
+    function: "pd.DataFrame()",
+    title: "Create a DataFrame",
+    description: "Creates a two-dimensional table with rows and columns.",
+    example: `import pandas as pd
+
+data = {
+    "name": ["Asha", "Binu", "Cathy"],
+    "age": [20, 22, 21]
+}
+
+df = pd.DataFrame(data)
+
+print(df)`
+},
+
+{
+    category: "Basics",
+    function: "pd.date_range()",
+    title: "Create Date Range",
+    description: "Creates a sequence of dates.",
+    example: `dates = pd.date_range(
+    "2026-01-01",
+    periods=5,
+    freq="D"
+)
+
+print(dates)`
+},
+
+/* =====================================================
+   CREATE DATA
+===================================================== */
+
+{
+    category: "Create Data",
+    function: "pd.DataFrame(dict)",
+    title: "Dictionary → DataFrame",
+    description: "Create a DataFrame using dictionary columns.",
+    example: `data = {
+    "name": ["Asha", "Binu", "Cathy"],
+    "score": [80, 75, 90]
+}
+
+df = pd.DataFrame(data)
+
+print(df)`
+},
+
+{
+    category: "Create Data",
+    function: "pd.DataFrame(list)",
+    title: "List → DataFrame",
+    description: "Create a DataFrame from a list of rows.",
+    example: `data = [
+    ["Asha", 20],
+    ["Binu", 22],
+    ["Cathy", 21]
+]
+
+df = pd.DataFrame(
+    data,
+    columns=["name", "age"]
+)
+
+print(df)`
+},
+
+/* =====================================================
+   READ / WRITE
+===================================================== */
+
+{
+    category: "Read / Write",
+    function: "pd.read_csv()",
+    title: "Read CSV",
+    description: "Loads a CSV file into a DataFrame.",
+    example: `df = pd.read_csv("students.csv")
+
+print(df.head())`
+},
+
+{
+    category: "Read / Write",
+    function: "pd.read_excel()",
+    title: "Read Excel",
+    description: "Reads an Excel file into a DataFrame.",
+    example: `df = pd.read_excel("students.xlsx")
+
+print(df.head())`
+},
+
+{
+    category: "Read / Write",
+    function: "pd.read_json()",
+    title: "Read JSON",
+    description: "Loads JSON data into a DataFrame.",
+    example: `df = pd.read_json("students.json")
+
+print(df.head())`
+},
+
+{
+    category: "Read / Write",
+    function: "df.to_csv()",
+    title: "Export CSV",
+    description: "Saves a DataFrame as a CSV file.",
+    example: `df.to_csv(
+    "output.csv",
+    index=False
+)`
+},
+
+{
+    category: "Read / Write",
+    function: "df.to_excel()",
+    title: "Export Excel",
+    description: "Saves a DataFrame as an Excel file.",
+    example: `df.to_excel(
+    "output.xlsx",
+    index=False
+)`
+},
+
+{
+    category: "Read / Write",
+    function: "df.to_json()",
+    title: "Export JSON",
+    description: "Converts a DataFrame into JSON format.",
+    example: `df.to_json(
+    "output.json"
+)`
+},
+
+/* =====================================================
+   INSPECT
+===================================================== */
+
+{
+    category: "Inspect",
+    function: "df.head()",
+    title: "First Rows",
+    description: "Displays the first 5 rows by default.",
+    example: `df.head()
+
+# First 10 rows
+df.head(10)`
+},
+
+{
+    category: "Inspect",
+    function: "df.tail()",
+    title: "Last Rows",
+    description: "Displays the last 5 rows by default.",
+    example: `df.tail()
+
+df.tail(10)`
+},
+
+{
+    category: "Inspect",
+    function: "df.sample()",
+    title: "Random Rows",
+    description: "Returns random rows from the DataFrame.",
+    example: `df.sample(5)`
+},
+
+{
+    category: "Inspect",
+    function: "df.info()",
+    title: "DataFrame Information",
+    description: "Shows columns, data types, non-null counts and memory usage.",
+    example: `df.info()`
+},
+
+{
+    category: "Inspect",
+    function: "df.describe()",
+    title: "Statistical Summary",
+    description: "Generates statistics such as count, mean, std, min and max.",
+    example: `df.describe()`
+},
+
+{
+    category: "Inspect",
+    function: "df.shape",
+    title: "Rows and Columns",
+    description: "Returns the number of rows and columns.",
+    example: `print(df.shape)
+
+# Example:
+# (100, 5)`
+},
+
+{
+    category: "Inspect",
+    function: "df.columns",
+    title: "Column Names",
+    description: "Returns all column names.",
+    example: `print(df.columns)`
+},
+
+{
+    category: "Inspect",
+    function: "df.index",
+    title: "DataFrame Index",
+    description: "Returns the row index.",
+    example: `print(df.index)`
+},
+
+{
+    category: "Inspect",
+    function: "df.dtypes",
+    title: "Column Data Types",
+    description: "Shows the data type of every column.",
+    example: `print(df.dtypes)`
+},
+
+{
+    category: "Inspect",
+    function: "df.size",
+    title: "Total Elements",
+    description: "Returns the total number of cells.",
+    example: `print(df.size)`
+},
+
+{
+    category: "Inspect",
+    function: "df.ndim",
+    title: "Number of Dimensions",
+    description: "DataFrame has 2 dimensions.",
+    example: `print(df.ndim)
+
+# 2`
+},
+
+{
+    category: "Inspect",
+    function: "df.empty",
+    title: "Check Empty DataFrame",
+    description: "Returns True if the DataFrame contains no elements.",
+    example: `print(df.empty)`
+},
+
+/* =====================================================
+   SELECT
+===================================================== */
+
+{
+    category: "Select",
+    function: "df[" + `"age"` + "]",
+    title: "Select One Column",
+    description: "Selects a single column as a Series.",
+    example: `ages = df["age"]
+
+print(ages)`
+},
+
+{
+    category: "Select",
+    function: "df[[" + `"name", "age"` + "]]",
+    title: "Select Multiple Columns",
+    description: "Selects multiple columns from a DataFrame.",
+    example: `result = df[
+    ["name", "age"]
+]
+
+print(result)`
+},
+
+{
+    category: "Select",
+    function: ".loc[]",
+    title: "Label-Based Selection",
+    description: "Select rows and columns using labels.",
+    example: `# Row with index 2
+print(df.loc[2])
+
+# Specific columns
+print(
+    df.loc[:, ["name", "age"]]
+)`
+},
+
+{
+    category: "Select",
+    function: ".iloc[]",
+    title: "Position-Based Selection",
+    description: "Selects rows and columns using integer positions.",
+    example: `# First row
+print(df.iloc[0])
+
+# First column
+print(df.iloc[:, 0])
+
+# First 3 rows
+print(df.iloc[0:3])`
+},
+
+{
+    category: "Select",
+    function: ".at[]",
+    title: "Single Value by Label",
+    description: "Fast access to one cell using row and column labels.",
+    example: `value = df.at[0, "age"]
+
+print(value)`
+},
+
+{
+    category: "Select",
+    function: ".iat[]",
+    title: "Single Value by Position",
+    description: "Fast access to one cell using integer positions.",
+    example: `value = df.iat[0, 1]
+
+print(value)`
+},
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+{
+    category: "Filter",
+    function: "df[condition]",
+    title: "Filter Rows",
+    description: "Select rows that satisfy a condition.",
+    example: `result = df[df["age"] > 18]
+
+print(result)`
+},
+
+{
+    category: "Filter",
+    function: "&",
+    title: "AND Condition",
+    description: "Use & when both conditions must be true.",
+    example: `result = df[
+    (df["age"] > 18) &
+    (df["score"] >= 80)
+]
+
+print(result)`
+},
+
+{
+    category: "Filter",
+    function: "|",
+    title: "OR Condition",
+    description: "Use | when either condition can be true.",
+    example: `result = df[
+    (df["city"] == "Kochi") |
+    (df["city"] == "Alappuzha")
+]`
+},
+
+{
+    category: "Filter",
+    function: "~",
+    title: "NOT Condition",
+    description: "Reverses a boolean condition.",
+    example: `result = df[
+    ~df["city"].isin(["Kochi"])
+]`
+},
+
+{
+    category: "Filter",
+    function: ".isin()",
+    title: "Check Multiple Values",
+    description: "Checks whether values exist in a list.",
+    example: `cities = ["Kochi", "Kollam"]
+
+result = df[
+    df["city"].isin(cities)
+]
+
+print(result)`
+},
+
+{
+    category: "Filter",
+    function: ".between()",
+    title: "Range Filtering",
+    description: "Checks whether values are between two limits.",
+    example: `result = df[
+    df["age"].between(18, 25)
+]
+
+print(result)`
+},
+
+{
+    category: "Filter",
+    function: "df.query()",
+    title: "Query DataFrame",
+    description: "Filters rows using a readable expression.",
+    example: `result = df.query(
+    "age > 18 and score >= 80"
+)
+
+print(result)`
+},
+
+{
+    category: "Filter",
+    function: "df.where()",
+    title: "Keep Values by Condition",
+    description: "Keeps values where a condition is True and replaces others.",
+    example: `result = df["score"].where(
+    df["score"] >= 50,
+    0
+)
+
+print(result)`
+},
+
+/* =====================================================
+   CLEANING
+===================================================== */
+
+{
+    category: "Clean",
+    function: "df.isna()",
+    title: "Find Missing Values",
+    description: "Returns True where values are missing.",
+    example: `print(df.isna())
+
+# Count missing values
+print(df.isna().sum())`
+},
+
+{
+    category: "Clean",
+    function: "df.notna()",
+    title: "Find Non-Missing Values",
+    description: "Returns True where values are not missing.",
+    example: `print(df.notna())`
+},
+
+{
+    category: "Clean",
+    function: "df.isnull()",
+    title: "Alternative to isna()",
+    description: "isnull() is an alias of isna().",
+    example: `print(df.isnull().sum())`
+},
+
+{
+    category: "Clean",
+    function: "df.dropna()",
+    title: "Remove Missing Rows",
+    description: "Removes rows containing missing values.",
+    example: `clean = df.dropna()
+
+print(clean)`
+},
+
+{
+    category: "Clean",
+    function: "df.fillna()",
+    title: "Replace Missing Values",
+    description: "Replaces missing values with another value.",
+    example: `df["age"] = df["age"].fillna(
+    df["age"].median()
+)
+
+print(df)`
+},
+
+{
+    category: "Clean",
+    function: ".ffill()",
+    title: "Forward Fill",
+    description: "Fills missing values using the previous value.",
+    example: `df["price"] = df["price"].ffill()`
+},
+
+{
+    category: "Clean",
+    function: ".bfill()",
+    title: "Backward Fill",
+    description: "Fills missing values using the next available value.",
+    example: `df["price"] = df["price"].bfill()`
+},
+
+{
+    category: "Clean",
+    function: ".astype()",
+    title: "Change Data Type",
+    description: "Converts a column into another data type.",
+    example: `df["age"] = df["age"].astype(int)
+
+df["name"] = df["name"].astype(str)`
+},
+
+{
+    category: "Clean",
+    function: "pd.to_numeric()",
+    title: "Convert to Numbers",
+    description: "Converts values into numeric data.",
+    example: `df["salary"] = pd.to_numeric(
+    df["salary"],
+    errors="coerce"
+)`
+},
+
+{
+    category: "Clean",
+    function: "pd.to_datetime()",
+    title: "Convert to Date",
+    description: "Converts a column into datetime values.",
+    example: `df["date"] = pd.to_datetime(
+    df["date"]
+)`
+},
+
+{
+    category: "Clean",
+    function: "df.duplicated()",
+    title: "Find Duplicates",
+    description: "Returns True for duplicate rows.",
+    example: `duplicates = df.duplicated()
+
+print(duplicates)`
+},
+
+{
+    category: "Clean",
+    function: "df.drop_duplicates()",
+    title: "Remove Duplicates",
+    description: "Removes duplicate rows.",
+    example: `df = df.drop_duplicates()`
+},
+
+{
+    category: "Clean",
+    function: "df.rename()",
+    title: "Rename Columns",
+    description: "Changes column names or index labels.",
+    example: `df = df.rename(
+    columns={
+        "old_name": "new_name"
+    }
+)`
+},
+
+{
+    category: "Clean",
+    function: "df.replace()",
+    title: "Replace Values",
+    description: "Replaces specific values with new values.",
+    example: `df["gender"] = df["gender"].replace({
+    "M": "Male",
+    "F": "Female"
+})`
+},
+
+/* =====================================================
+   TRANSFORM
+===================================================== */
+
+{
+    category: "Transform",
+    function: "df[" + `"new_column"` + "]",
+    title: "Create New Column",
+    description: "Creates a new column using existing data.",
+    example: `df["total"] = (
+    df["price"] *
+    df["quantity"]
+)
+
+print(df)`
+},
+
+{
+    category: "Transform",
+    function: "df.assign()",
+    title: "Create Columns with assign()",
+    description: "Creates new columns and returns a new DataFrame.",
+    example: `result = df.assign(
+    total=df["price"] * df["quantity"]
+)
+
+print(result)`
+},
+
+{
+    category: "Transform",
+    function: "df.apply()",
+    title: "Apply Function",
+    description: "Applies a function across rows or columns.",
+    example: `df["score"] = df["score"].apply(
+    lambda x: x + 5
+)
+
+print(df)`
+},
+
+{
+    category: "Transform",
+    function: "Series.map()",
+    title: "Map Values",
+    description: "Maps each value using a dictionary or function.",
+    example: `df["gender"] = df["gender"].map({
+    "M": "Male",
+    "F": "Female"
+})`
+},
+
+{
+    category: "Transform",
+    function: "df[" + `"total"` + "]",
+    title: "Column Calculation",
+    description: "Perform calculations directly between columns.",
+    example: `df["total"] = (
+    df["price"] * df["quantity"]
+)
+
+df["final_price"] = (
+    df["total"] * 1.18
+)`
+},
+
+/* =====================================================
+   STRINGS
+===================================================== */
+
+{
+    category: "Strings",
+    function: ".str.lower()",
+    title: "Lowercase Text",
+    description: "Converts text values to lowercase.",
+    example: `df["name"] = df["name"].str.lower()`
+},
+
+{
+    category: "Strings",
+    function: ".str.upper()",
+    title: "Uppercase Text",
+    description: "Converts text values to uppercase.",
+    example: `df["name"] = df["name"].str.upper()`
+},
+
+{
+    category: "Strings",
+    function: ".str.strip()",
+    title: "Remove Spaces",
+    description: "Removes spaces from the beginning and end of text.",
+    example: `df["name"] = df["name"].str.strip()`
+},
+
+{
+    category: "Strings",
+    function: ".str.contains()",
+    title: "Search Text",
+    description: "Checks whether text contains a particular value.",
+    example: `result = df[
+    df["name"].str.contains(
+        "an",
+        case=False,
+        na=False
+    )
+]`
+},
+
+{
+    category: "Strings",
+    function: ".str.startswith()",
+    title: "Starts With",
+    description: "Checks whether text starts with specific characters.",
+    example: `result = df[
+    df["name"].str.startswith("A")
+]`
+},
+
+{
+    category: "Strings",
+    function: ".str.replace()",
+    title: "Replace Text",
+    description: "Replaces part of a string.",
+    example: `df["city"] = df["city"].str.replace(
+    "Cochin",
+    "Kochi"
+)`
+},
+
+{
+    category: "Strings",
+    function: ".str.split()",
+    title: "Split Text",
+    description: "Splits strings into parts.",
+    example: `df["full_name"].str.split(" ")`
+},
+
+{
+    category: "Strings",
+    function: ".str.len()",
+    title: "String Length",
+    description: "Returns the number of characters.",
+    example: `df["name_length"] = (
+    df["name"].str.len()
+)`
+},
+
+/* =====================================================
+   SORT
+===================================================== */
+
+{
+    category: "Sort",
+    function: "df.sort_values()",
+    title: "Sort by Column",
+    description: "Sorts rows based on one or more columns.",
+    example: `df = df.sort_values(
+    "salary"
+)
+
+# Descending
+df = df.sort_values(
+    "salary",
+    ascending=False
+)`
+},
+
+{
+    category: "Sort",
+    function: "df.sort_index()",
+    title: "Sort by Index",
+    description: "Sorts rows using the index.",
+    example: `df = df.sort_index()`
+},
+
+{
+    category: "Sort",
+    function: "df.nlargest()",
+    title: "Top N Values",
+    description: "Returns rows with the largest values.",
+    example: `top = df.nlargest(
+    5,
+    "salary"
+)
+
+print(top)`
+},
+
+{
+    category: "Sort",
+    function: "df.nsmallest()",
+    title: "Smallest N Values",
+    description: "Returns rows with the smallest values.",
+    example: `lowest = df.nsmallest(
+    5,
+    "salary"
+)
+
+print(lowest)`
+},
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+{
+    category: "Statistics",
+    function: ".sum()",
+    title: "Sum",
+    description: "Calculates the total.",
+    example: `total = df["salary"].sum()
+
+print(total)`
+},
+
+{
+    category: "Statistics",
+    function: ".mean()",
+    title: "Mean / Average",
+    description: "Calculates the average value.",
+    example: `average = df["score"].mean()
+
+print(average)`
+},
+
+{
+    category: "Statistics",
+    function: ".median()",
+    title: "Median",
+    description: "Returns the middle value.",
+    example: `median = df["age"].median()
+
+print(median)`
+},
+
+{
+    category: "Statistics",
+    function: ".std()",
+    title: "Standard Deviation",
+    description: "Measures how spread out values are.",
+    example: `std = df["score"].std()
+
+print(std)`
+},
+
+{
+    category: "Statistics",
+    function: ".var()",
+    title: "Variance",
+    description: "Calculates the variance of values.",
+    example: `variance = df["score"].var()
+
+print(variance)`
+},
+
+{
+    category: "Statistics",
+    function: ".min()",
+    title: "Minimum",
+    description: "Returns the smallest value.",
+    example: `minimum = df["salary"].min()
+
+print(minimum)`
+},
+
+{
+    category: "Statistics",
+    function: ".max()",
+    title: "Maximum",
+    description: "Returns the largest value.",
+    example: `maximum = df["salary"].max()
+
+print(maximum)`
+},
+
+{
+    category: "Statistics",
+    function: ".count()",
+    title: "Count Values",
+    description: "Counts non-missing values.",
+    example: `count = df["salary"].count()
+
+print(count)`
+},
+
+{
+    category: "Statistics",
+    function: ".nunique()",
+    title: "Unique Count",
+    description: "Returns the number of unique values.",
+    example: `count = df["city"].nunique()
+
+print(count)`
+},
+
+{
+    category: "Statistics",
+    function: ".value_counts()",
+    title: "Frequency Count",
+    description: "Counts how many times each value occurs.",
+    example: `print(
+    df["city"].value_counts()
+)`
+},
+
+{
+    category: "Statistics",
+    function: ".quantile()",
+    title: "Percentile / Quantile",
+    description: "Returns a value at a specific quantile.",
+    example: `q50 = df["salary"].quantile(0.50)
+
+q90 = df["salary"].quantile(0.90)
+
+print(q50)
+print(q90)`
+},
+
+{
+    category: "Statistics",
+    function: ".corr()",
+    title: "Correlation",
+    description: "Measures the relationship between numeric columns.",
+    example: `print(
+    df[["age", "salary", "score"]].corr()
+)`
+},
+
+/* =====================================================
+   GROUPBY
+===================================================== */
+
+{
+    category: "GroupBy",
+    function: "df.groupby()",
+    title: "Group Data",
+    description: "Groups rows based on one or more columns.",
+    example: `result = df.groupby(
+    "department"
+)["salary"].mean()
+
+print(result)`
+},
+
+{
+    category: "GroupBy",
+    function: ".groupby().sum()",
+    title: "Group + Sum",
+    description: "Calculates totals for each group.",
+    example: `result = df.groupby(
+    "department"
+)["salary"].sum()
+
+print(result)`
+},
+
+{
+    category: "GroupBy",
+    function: ".groupby().mean()",
+    title: "Group + Mean",
+    description: "Calculates the average for every group.",
+    example: `result = df.groupby(
+    "department"
+)["score"].mean()
+
+print(result)`
+},
+
+{
+    category: "GroupBy",
+    function: ".agg()",
+    title: "Multiple Aggregations",
+    description: "Apply multiple statistical functions to grouped data.",
+    example: `result = df.groupby("department")[
+    "salary"
+].agg([
+    "mean",
+    "median",
+    "min",
+    "max"
+])
+
+print(result)`
+},
+
+{
+    category: "GroupBy",
+    function: ".transform()",
+    title: "Group Transform",
+    description: "Returns a result with the same number of rows as the original data.",
+    example: `df["dept_avg"] = (
+    df.groupby("department")[
+        "salary"
+    ].transform("mean")
+)
+
+print(df)`
+},
+
+{
+    category: "GroupBy",
+    function: "groupby().transform('median')",
+    title: "Fill Missing Values by Group",
+    description: "A powerful technique for filling missing values using the median of each group.",
+    example: `df["age"] = df["age"].fillna(
+    df.groupby(
+        ["sex", "pclass"]
+    )["age"].transform("median")
+)
+
+print(df)`
+},
+
+{
+    category: "GroupBy",
+    function: ".groupby().size()",
+    title: "Group Size",
+    description: "Counts the number of rows in each group.",
+    example: `result = df.groupby(
+    "department"
+).size()
+
+print(result)`
+},
+
+{
+    category: "GroupBy",
+    function: ".groupby().count()",
+    title: "Group Count",
+    description: "Counts non-null values inside each group.",
+    example: `result = df.groupby(
+    "department"
+)["salary"].count()
+
+print(result)`
+},
+
+{
+    category: "GroupBy",
+    function: ".groupby().filter()",
+    title: "Filter Groups",
+    description: "Keeps groups that satisfy a condition.",
+    example: `result = df.groupby(
+    "department"
+).filter(
+    lambda x: len(x) >= 5
+)
+
+print(result)`
+},
+
+/* =====================================================
+   COMBINE
+===================================================== */
+
+{
+    category: "Combine",
+    function: "pd.concat()",
+    title: "Concatenate DataFrames",
+    description: "Combines DataFrames vertically or horizontally.",
+    example: `result = pd.concat(
+    [df1, df2],
+    ignore_index=True
+)
+
+print(result)`
+},
+
+{
+    category: "Combine",
+    function: "pd.merge()",
+    title: "Merge DataFrames",
+    description: "Combines DataFrames using matching columns, similar to SQL JOIN.",
+    example: `result = pd.merge(
+    students,
+    marks,
+    on="student_id",
+    how="inner"
+)
+
+print(result)`
+},
+
+{
+    category: "Combine",
+    function: "how='left'",
+    title: "Left Join",
+    description: "Keeps every row from the left DataFrame.",
+    example: `result = pd.merge(
+    customers,
+    orders,
+    on="customer_id",
+    how="left"
+)`
+},
+
+{
+    category: "Combine",
+    function: "how='outer'",
+    title: "Outer Join",
+    description: "Keeps all rows from both DataFrames.",
+    example: `result = pd.merge(
+    df1,
+    df2,
+    on="id",
+    how="outer"
+)`
+},
+
+{
+    category: "Combine",
+    function: "df.join()",
+    title: "Join DataFrames",
+    description: "Joins another DataFrame mainly using indexes.",
+    example: `result = df1.join(
+    df2,
+    lsuffix="_left",
+    rsuffix="_right"
+)`
+},
+
+{
+    category: "Combine",
+    function: "pd.crosstab()",
+    title: "Cross Tabulation",
+    description: "Creates a frequency table between categorical variables.",
+    example: `table = pd.crosstab(
+    df["gender"],
+    df["department"]
+)
+
+print(table)`
+},
+
+/* =====================================================
+   RESHAPE
+===================================================== */
+
+{
+    category: "Reshape",
+    function: "df.pivot()",
+    title: "Pivot Data",
+    description: "Reshapes data from long format to wide format.",
+    example: `result = df.pivot(
+    index="date",
+    columns="city",
+    values="sales"
+)
+
+print(result)`
+},
+
+{
+    category: "Reshape",
+    function: "df.pivot_table()",
+    title: "Pivot Table",
+    description: "Creates spreadsheet-style summaries with aggregation.",
+    example: `result = df.pivot_table(
+    index="department",
+    values="salary",
+    aggfunc="mean"
+)
+
+print(result)`
+},
+
+{
+    category: "Reshape",
+    function: "pd.melt()",
+    title: "Melt Data",
+    description: "Converts wide data into long format.",
+    example: `result = pd.melt(
+    df,
+    id_vars=["name"],
+    value_vars=["math", "science"]
+)
+
+print(result)`
+},
+
+{
+    category: "Reshape",
+    function: "df.stack()",
+    title: "Stack",
+    description: "Moves columns into the row index.",
+    example: `result = df.stack()
+
+print(result)`
+},
+
+{
+    category: "Reshape",
+    function: "df.unstack()",
+    title: "Unstack",
+    description: "Moves index levels into columns.",
+    example: `result = df.unstack()
+
+print(result)`
+},
+
+{
+    category: "Reshape",
+    function: "df.T",
+    title: "Transpose",
+    description: "Swaps rows and columns.",
+    example: `result = df.T
+
+print(result)`
+},
+
+/* =====================================================
+   DATES
+===================================================== */
+
+{
+    category: "Dates",
+    function: "pd.to_datetime()",
+    title: "Convert to Datetime",
+    description: "Converts strings into pandas datetime objects.",
+    example: `df["date"] = pd.to_datetime(
+    df["date"]
+)`
+},
+
+{
+    category: "Dates",
+    function: ".dt.year",
+    title: "Extract Year",
+    description: "Gets the year from a datetime column.",
+    example: `df["year"] = df["date"].dt.year`
+},
+
+{
+    category: "Dates",
+    function: ".dt.month",
+    title: "Extract Month",
+    description: "Gets the month number.",
+    example: `df["month"] = df["date"].dt.month`
+},
+
+{
+    category: "Dates",
+    function: ".dt.day",
+    title: "Extract Day",
+    description: "Gets the day of the month.",
+    example: `df["day"] = df["date"].dt.day`
+},
+
+{
+    category: "Dates",
+    function: ".dt.day_name()",
+    title: "Day Name",
+    description: "Returns names such as Monday, Tuesday, etc.",
+    example: `df["day_name"] = (
+    df["date"].dt.day_name()
+)`
+},
+
+{
+    category: "Dates",
+    function: ".dt.days",
+    title: "Days from Timedelta",
+    description: "Extracts the number of days from a timedelta.",
+    example: `df["days"] = (
+    df["difference"].dt.days
+)`
+},
+
+{
+    category: "Dates",
+    function: "df.resample()",
+    title: "Time Resampling",
+    description: "Groups time-series data into periods such as days, weeks or months.",
+    example: `df["date"] = pd.to_datetime(
+    df["date"]
+)
+
+df = df.set_index("date")
+
+monthly = df.resample("ME")[
+    "sales"
+].sum()
+
+print(monthly)`
+},
+
+/* =====================================================
+   ENCODING / BINNING
+===================================================== */
+
+{
+    category: "Encoding",
+    function: "pd.get_dummies()",
+    title: "One-Hot Encoding",
+    description: "Converts categorical values into 0/1 columns.",
+    example: `encoded = pd.get_dummies(
+    df,
+    columns=["gender"]
+)
+
+print(encoded)`
+},
+
+{
+    category: "Encoding",
+    function: "pd.cut()",
+    title: "Create Age Groups",
+    description: "Divides numeric values into custom ranges.",
+    example: `df["age_group"] = pd.cut(
+    df["age"],
+    bins=[0, 18, 30, 50, 100],
+    labels=[
+        "Child",
+        "Young",
+        "Adult",
+        "Senior"
+    ]
+)
+
+print(df)`
+},
+
+{
+    category: "Encoding",
+    function: "pd.qcut()",
+    title: "Quantile Binning",
+    description: "Divides data into groups with approximately equal numbers of observations.",
+    example: `df["salary_group"] = pd.qcut(
+    df["salary"],
+    q=4,
+    labels=[
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+    ]
+)
+
+print(df)`
+},
+
+/* =====================================================
+   PRACTICAL
+===================================================== */
+
+{
+    category: "Basics",
+    function: "Data Analysis Workflow",
+    title: "Complete Pandas Workflow",
+    description: "A practical workflow you can use for most beginner data-analysis projects.",
+    example: `import pandas as pd
+
+# 1. Read
+df = pd.read_csv("data.csv")
+
+# 2. Inspect
+print(df.head())
+print(df.info())
+
+# 3. Clean
+df = df.drop_duplicates()
+
+df["age"] = df["age"].fillna(
+    df["age"].median()
+)
+
+# 4. Filter
+adults = df[df["age"] >= 18]
+
+# 5. Group
+result = adults.groupby(
+    "department"
+)["salary"].mean()
+
+# 6. Export
+result.to_csv("result.csv")`
+},
+
+{
+    category: "Basics",
+    function: "Practice DataFrame",
+    title: "Create Practice Data",
+    description: "Small DataFrame for practicing Pandas operations.",
+    example: `df = pd.DataFrame({
+    "name": [
+        "Asha",
+        "Binu",
+        "Cathy",
+        "David",
+        "Evan"
+    ],
+
+    "age": [
+        20,
+        22,
+        None,
+        25,
+        21
+    ],
+
+    "department": [
+        "IT",
+        "HR",
+        "IT",
+        "Sales",
+        "HR"
+    ],
+
+    "score": [
+        85,
+        72,
+        90,
+        65,
+        88
+    ]
+})
+
+print(df)`
+}
+
+];
+
+
+/* =====================================================
+   CATEGORIES
+===================================================== */
+
+const categories = [
+    "All",
+    "Basics",
+    "Create Data",
+    "Read / Write",
+    "Inspect",
+    "Select",
+    "Filter",
+    "Clean",
+    "Transform",
+    "Strings",
+    "Sort",
+    "Statistics",
+    "GroupBy",
+    "Combine",
+    "Reshape",
+    "Dates",
+    "Encoding"
+];
+
+const categoryContainer =
+    document.getElementById("categories");
+
+const cardsContainer =
+    document.getElementById("cards");
+
+const searchInput =
+    document.getElementById("search");
+
+const noResults =
+    document.getElementById("noResults");
+
+
+let currentCategory = "All";
+
+
+/* =====================================================
+   CREATE CATEGORY BUTTONS
+===================================================== */
+
+categories.forEach(category => {
+
+    const button =
+        document.createElement("button");
+
+    button.className = "category-btn";
+
+    if (category === "All") {
+        button.classList.add("active");
+    }
+
+    button.textContent = category;
+
+    button.onclick = () => {
+
+        currentCategory = category;
+
+        document
+            .querySelectorAll(".category-btn")
+            .forEach(btn =>
+                btn.classList.remove("active")
+            );
+
+        button.classList.add("active");
+
+        render();
+    };
+
+    categoryContainer.appendChild(button);
+});
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =====================================================
+   RENDER CARDS
+===================================================== */
+
+function render() {
+
+    const search =
+        searchInput.value.toLowerCase().trim();
+
+    const filtered =
+        data.filter(item => {
+
+            const matchesCategory =
+                currentCategory === "All" ||
+                item.category === currentCategory;
+
+            const matchesSearch =
+                item.function
+                    .toLowerCase()
+                    .includes(search) ||
+
+                item.title
+                    .toLowerCase()
+                    .includes(search) ||
+
+                item.description
+                    .toLowerCase()
+                    .includes(search) ||
+
+                item.example
+                    .toLowerCase()
+                    .includes(search);
+
+            return matchesCategory && matchesSearch;
+        });
+
+
+    cardsContainer.innerHTML = "";
+
+
+    filtered.forEach(item => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+            <div class="category-label">
+                ${item.category}
+            </div>
+
+            <div class="function">
+                ${escapeHTML(item.function)}
+            </div>
+
+            <div class="title">
+                ${escapeHTML(item.title)}
+            </div>
+
+            <div class="description">
+                ${escapeHTML(item.description)}
+            </div>
+
+            <pre><code>${escapeHTML(item.example)}</code></pre>
+        `;
+
+        cardsContainer.appendChild(card);
+    });
+
+
+    if (filtered.length === 0) {
+        noResults.style.display = "block";
+    } else {
+        noResults.style.display = "none";
+    }
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+searchInput.addEventListener(
+    "input",
+    render
+);
+
+
+/* =====================================================
+   INITIAL RENDER
+===================================================== */
+
+render();
+
+</script>
+
+</body>
+</html>
