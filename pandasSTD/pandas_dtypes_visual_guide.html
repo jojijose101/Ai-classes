@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandas Data Types Visual Guide</title>
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+.container{max-width:1200px;margin:auto;padding:28px 18px 50px}
+header{
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    color:white;
+    padding:28px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+header h1{margin:0 0 8px;font-size:30px}
+header p{margin:0;opacity:.9;line-height:1.6}
+.tabs{
+    display:flex;gap:8px;overflow-x:auto;
+    margin-bottom:18px;padding-bottom:5px
+}
+.tabs button{
+    border:1px solid #dbe2ea;background:white;color:#172033;
+    border-radius:10px;padding:12px 18px;font-weight:700;
+    cursor:pointer;white-space:nowrap;transition:.2s
+}
+.tabs button:hover{transform:translateY(-1px)}
+.tabs button.active{background:#eef2ff;color:#4f46e5;border-color:#4f46e5}
+.grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:18px
+}
+.card{
+    background:white;border:1px solid #dbe2ea;
+    border-radius:16px;padding:22px;
+    box-shadow:0 5px 20px rgba(15,23,42,.05)
+}
+.badge{
+    display:inline-block;background:#eef2ff;color:#4f46e5;
+    padding:5px 10px;border-radius:20px;font-size:12px;font-weight:800
+}
+h2{margin:9px 0 6px;font-size:25px}
+h3{margin:20px 0 8px;font-size:16px}
+p{color:#64748b;line-height:1.6}
+.code{
+    background:#111827;color:#e5e7eb;
+    border-radius:12px;padding:16px;
+    overflow:auto;font:14px/1.65 Consolas,monospace;
+    white-space:pre
+}
+.facts{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px
+}
+.fact{
+    border:1px solid #e2e8f0;border-radius:11px;
+    padding:12px;background:#f8fafc
+}
+.fact strong{display:block;color:#64748b;font-size:11px;margin-bottom:5px}
+.note{
+    margin-top:16px;padding:13px 15px;
+    background:#eef2ff;border-left:4px solid #4f46e5;
+    border-radius:7px;font-size:14px;line-height:1.6
+}
+.compare{
+    margin-top:20px;background:white;border:1px solid #dbe2ea;
+    border-radius:16px;padding:20px;overflow:auto
+}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #e5e7eb}
+th{background:#f8fafc;font-size:13px}
+td{font-size:14px}
+code{
+    background:#eef2ff;color:#4338ca;
+    padding:2px 5px;border-radius:4px
+}
+@media(max-width:750px){
+    .grid{grid-template-columns:1fr}
+    header h1{font-size:24px}
+    .facts{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+    <h1>🐼 Pandas Data Types</h1>
+    <p>
+        Learn the most important Pandas column dtypes:
+        <b>int64, float64, string, object, category and bool</b>.
+        Select a type below to explore its properties, methods, examples and uses.
+    </p>
+</header>
+
+<div class="tabs">
+    <button class="active" onclick="showType('int64',this)">int64</button>
+    <button onclick="showType('float64',this)">float64</button>
+    <button onclick="showType('string',this)">string</button>
+    <button onclick="showType('object',this)">object</button>
+    <button onclick="showType('category',this)">category</button>
+    <button onclick="showType('bool',this)">bool</button>
+</div>
+
+<div id="content"></div>
+
+<div class="compare">
+<h2>📌 Quick Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>dtype</th>
+<th>Stores</th>
+<th>Example</th>
+<th>Common use</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code>int64</code></td><td>Whole numbers</td><td>25</td><td>Age, quantity, marks</td></tr>
+<tr><td><code>float64</code></td><td>Decimal numbers</td><td>25.5</td><td>Price, salary, average</td></tr>
+<tr><td><code>string</code></td><td>Text</td><td>"Anu"</td><td>Name, city, email</td></tr>
+<tr><td><code>object</code></td><td>General Python objects</td><td>"Anu"</td><td>Older/mixed data</td></tr>
+<tr><td><code>category</code></td><td>Limited repeated labels</td><td>"Gold"</td><td>Grade, department</td></tr>
+<tr><td><code>bool</code></td><td>True / False</td><td>True</td><td>Status, conditions</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+<script>
+const data = {
+
+int64:{
+badge:"WHOLE NUMBERS",
+title:"int64",
+desc:"Stores integer values — numbers without decimal points.",
+values:"10, 25, 100, -5",
+use:"Age, quantity, marks, number of products, number of students.",
+example:`import pandas as pd
+
+df = pd.DataFrame({
+    "age": [20, 25, 30, 22]
+})
+
+print(df["age"].dtype)
+# int64`,
+properties:`df["age"].dtype
+df["age"].size
+df["age"].shape
+df["age"].ndim
+df["age"].values`,
+methods:`df["age"].sum()
+df["age"].mean()
+df["age"].min()
+df["age"].max()
+df["age"].abs()
+df["age"].value_counts()`,
+extra:`df["age"].isna()
+df["age"].astype("float64")`,
+note:"If a column contains only whole numbers, int64 is usually the natural numeric dtype."
+},
+
+float64:{
+badge:"DECIMAL NUMBERS",
+title:"float64",
+desc:"Stores numbers that can contain decimal values.",
+values:"10.5, 25.75, 99.99",
+use:"Salary, price, percentage, average, height, weight and measurements.",
+example:`import pandas as pd
+
+df = pd.DataFrame({
+    "salary": [25000.50, 32000.75, 41000.25]
+})
+
+print(df["salary"].dtype)
+# float64`,
+properties:`df["salary"].dtype
+df["salary"].size
+df["salary"].shape
+df["salary"].ndim
+df["salary"].values`,
+methods:`df["salary"].sum()
+df["salary"].mean()
+df["salary"].round(2)
+df["salary"].min()
+df["salary"].max()
+df["salary"].astype(int)`,
+extra:`df["salary"].isna()
+df["salary"].fillna(0)
+df["salary"].astype("float64")`,
+note:"Use float64 when decimal values are required. Converting to int removes the fractional part."
+},
+
+string:{
+badge:"TEXT",
+title:"string",
+desc:"Pandas string dtype is specifically designed for text data.",
+values:"Anu, Kerala, Python, Male",
+use:"Names, cities, email addresses, descriptions, IDs and other text.",
+example:`import pandas as pd
+
+df = pd.DataFrame({
+    "name": pd.Series(
+        ["Anu", "Binu", "Cathy"],
+        dtype="string"
+    )
+})
+
+print(df["name"].dtype)
+# string`,
+properties:`df["name"].dtype
+df["name"].size
+df["name"].shape
+df["name"].str.len()`,
+methods:`df["name"].str.lower()
+df["name"].str.upper()
+df["name"].str.strip()
+df["name"].str.contains("an")
+df["name"].str.startswith("A")
+df["name"].str.endswith("y")
+df["name"].str.replace("a","@")`,
+extra:`df["name"].str.split()
+df["name"].str.len()
+df["name"].isna()`,
+note:"For modern Pandas code, string is generally preferable when a column is known to contain text."
+},
+
+object:{
+badge:"GENERAL PYTHON OBJECT",
+title:"object",
+desc:"A flexible dtype that can hold Python objects. It is commonly seen in older Pandas datasets and mixed/text columns.",
+values:"'Anu', 'Binu', mixed Python objects",
+use:"Legacy datasets, mixed Python values, or columns Pandas cannot represent with a more specific dtype.",
+example:`import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["Anu", "Binu", "Cathy"]
+})
+
+print(df["name"].dtype)
+# often object`,
+properties:`df["name"].dtype
+df["name"].size
+df["name"].shape
+df["name"].values`,
+methods:`df["name"].astype("string")
+df["name"].astype("category")
+df["name"].isna()
+df["name"].value_counts()`,
+extra:`df["name"].infer_objects()
+df.convert_dtypes()`,
+note:"object is not exactly the same as string. It is a general-purpose container. Prefer string when you specifically know the column is text."
+},
+
+category:{
+badge:"LIMITED REPEATED VALUES",
+title:"category",
+desc:"Stores values from a fixed or limited set of categories.",
+values:"Gold, Silver, Bronze",
+use:"Gender, department, grade, membership level, city groups, product categories.",
+example:`import pandas as pd
+
+df = pd.DataFrame({
+    "level": ["Gold", "Silver", "Gold", "Bronze"]
+})
+
+df["level"] = df["level"].astype("category")
+
+print(df["level"].dtype)
+# category`,
+properties:`df["level"].dtype
+df["level"].cat.categories
+df["level"].cat.codes
+df["level"].cat.ordered`,
+methods:`df["level"].astype("category")
+df["level"].cat.categories
+df["level"].cat.codes
+df["level"].cat.rename_categories()
+df["level"].cat.add_categories()
+df["level"].cat.remove_categories()`,
+extra:`df["level"].value_counts()
+df["level"].isna()`,
+note:"category is especially useful when a column has a small number of repeated labels. It can also save memory."
+},
+
+bool:{
+badge:"TRUE / FALSE",
+title:"bool",
+desc:"Stores logical values: True or False.",
+values:"True, False",
+use:"Passed/not passed, active/inactive, available/unavailable, yes/no conditions.",
+example:`import pandas as pd
+
+df = pd.DataFrame({
+    "passed": [True, False, True, True]
+})
+
+print(df["passed"].dtype)
+# bool`,
+properties:`df["passed"].dtype
+df["passed"].size
+df["passed"].shape
+df["passed"].values`,
+methods:`df["passed"].sum()
+df["passed"].mean()
+df["passed"].value_counts()
+df["passed"].astype(int)
+df["passed"].any()
+df["passed"].all()`,
+extra:`df[df["passed"]]
+df[~df["passed"]]
+df["passed"].isna()`,
+note:"True behaves like 1 and False like 0 in many numeric operations. Therefore sum() can count True values."
+}
+};
+
+function showType(type, button){
+    document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+    button.classList.add("active");
+
+    const x=data[type];
+
+    document.getElementById("content").innerHTML=`
+    <div class="grid">
+
+        <section class="card">
+            <span class="badge">${x.badge}</span>
+            <h2>${x.title}</h2>
+            <p>${x.desc}</p>
+
+            <div class="facts">
+                <div class="fact">
+                    <strong>EXAMPLE VALUES</strong>
+                    ${x.values}
+                </div>
+                <div class="fact">
+                    <strong>COMMON USE</strong>
+                    ${x.use}
+                </div>
+            </div>
+
+            <h3>💻 Example</h3>
+            <div class="code">${escapeHtml(x.example)}</div>
+
+            <div class="note">
+                <b>Remember:</b> ${x.note}
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>🔍 Properties</h3>
+            <div class="code">${escapeHtml(x.properties)}</div>
+
+            <h3>⚙️ Common Methods</h3>
+            <div class="code">${escapeHtml(x.methods)}</div>
+
+            <h3>🛠️ Useful Operations</h3>
+            <div class="code">${escapeHtml(x.extra)}</div>
+        </section>
+
+    </div>`;
+}
+
+function escapeHtml(text){
+    return text
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;");
+}
+
+showType("int64",document.querySelector(".tabs button"));
+</script>
+</body>
+</html>
